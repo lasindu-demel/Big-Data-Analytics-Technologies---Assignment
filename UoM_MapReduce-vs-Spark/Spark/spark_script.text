@@ -1,0 +1,52 @@
+from pyspark.sql import SparkSession
+import time
+
+# Create SparkSession
+sqlContext = SparkSession.builder.appName("Assignment").getOrCreate()
+
+# Create DataFrame
+df = sqlContext.read.csv("s3://assignmentdatabucket/DelayedFlights-updated.csv", header=True, inferSchema=True)
+
+# Register the DataFrame as a temporary view
+df.createOrReplaceTempView("delay_flights")
+
+
+# Execute a Spark SQL query on the DataFrame
+#Year wise carrier delay from 2003-2010
+
+start_time = time.time()
+result = sqlContext.sql("SELECT Year, avg((CarrierDelay /ArrDelay)*100) as _C1 from delay_flights GROUP BY Year").show()
+end_time = time.time()
+print("Execution time:", end_time - start_time, "seconds")
+
+
+# Year wise NAS delay from 2003-2010
+
+start_time = time.time()
+result = sqlContext.sql("SELECT Year, avg((NASDelay /ArrDelay)*100) as _C1 from delay_flights GROUP BY Year").show()
+end_time = time.time()
+print("Execution time:", end_time - start_time, "seconds")
+
+
+# Year wise Weather delay from 2003-2010
+
+start_time = time.time()
+result = sqlContext.sql("SELECT Year, avg((WeatherDelay /ArrDelay)*100) as _C1 from delay_flights GROUP BY Year").show()
+end_time = time.time()
+print("Execution time:", end_time - start_time, "seconds")
+
+
+# Year wise late aircraft delay from 2003-2010
+
+start_time = time.time()
+result = sqlContext.sql("SELECT Year, avg((LateAircraftDelay /ArrDelay)*100) as _C1 from delay_flights GROUP BY Year").show()
+end_time = time.time()
+print("Execution time:", end_time - start_time, "seconds")
+
+
+# Year wise security delay from 2003-2010
+
+start_time = time.time()
+result = sqlContext.sql("SELECT Year, avg((SecurityDelay /ArrDelay)*100) as _C1 from delay_flights GROUP BY Year").show()
+end_time = time.time()
+print("Execution time:", end_time - start_time, "seconds") 
