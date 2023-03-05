@@ -1,5 +1,3 @@
-## Table Creation
-
 CREATE TABLE delay_flights (
   Id INT,
   Year INT,
@@ -33,3 +31,8 @@ CREATE TABLE delay_flights (
   LateAircraftDelay INT
 ) ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' STORED AS TEXTFILE LOCATION 's3://mydatastorefile/';
 
+SELECT Year, avg((CarrierDelay /ArrDelay)*100) from delay_flights GROUP BY Year;
+SELECT Year, avg((NASDelay /ArrDelay)*100) from delay_flights GROUP BY Year;
+SELECT Year, avg((WeatherDelay /ArrDelay)*100) from delay_flights GROUP BY Year;
+SELECT Year, avg((LateAircraftDelay /ArrDelay)*100) from delay_flights GROUP BY Year;
+SELECT Year, avg((SecurityDelay /ArrDelay)*100) from delay_flights GROUP BY Year;
